@@ -61,12 +61,6 @@ EOF
     default = {}
 }
 
-variable "allowed_sg" {
-    description = "List of Source Security Group IDs defined in Ingress of the created SG"
-    type        = list(string)
-    default     = []
-}
-
 variable "additional_sg" {
     description = "(Optional) List of Existing Security Group IDs associated with MSK."
     type        = list(string)
