@@ -33,15 +33,15 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 ### Inputs
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="cluster_name"></a> [cluster_name](#input\_cluster\_name) | The name of the serverless cluster. | `string` |  | yes |  |
-| <a name="vpc_configs"></a> [vpc_configs](#vpc\_configs) | VPC Configuration List to be associated with the serverless cluster. | `string` |  | yes |  |
-| <a name="configure_iam_policy"></a> [configure_iam_policy](#input\_configure\_iam\_policy) | Flag to decide if IAM Policy should also be configured. | `bool` | `true` | no |  |
-| <a name="account_id"></a> [account_id](#input\_account\_id) | Account ID where MSK cluster is provisioned. Default is picked as Caller's account | `string` | `null` | no |  |
-| <a name="region"></a> [region](#input\_region) | Region Name where MSK cluster is provisioned. Default is picked as Curent Region | `string` | `null` | no |  |
-| <a name="policy_name"></a> [policy_name](#input\_policy\_name) | IAM Policy Name created for the cluster. | `string` | `null` | no |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to MSK. | `map(string)` | `{}` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="cluster_name"></a> [cluster_name](#input\_cluster\_name) | The name of the serverless cluster. | `string` |  | yes |
+| <a name="vpc_configs"></a> [vpc_configs](#vpc\_configs) | VPC Configuration List to be associated with the serverless cluster. | `string` |  | yes |
+| <a name="configure_iam_policy"></a> [configure_iam_policy](#input\_configure\_iam\_policy) | Flag to decide if IAM Policy should also be configured. | `bool` | `true` | no |
+| <a name="account_id"></a> [account_id](#input\_account\_id) | Account ID where MSK cluster is provisioned. Default is picked as Caller's account | `string` | `null` | no |
+| <a name="region"></a> [region](#input\_region) | Region Name where MSK cluster is provisioned. Default is picked as Curent Region | `string` | `null` | no |
+| <a name="policy_name"></a> [policy_name](#input\_policy\_name) | IAM Policy Name created for the cluster. | `string` | `null` | no |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to MSK. | `map(string)` | `{}` | no |
 
 ### Nested Configuration Maps:  
 
@@ -53,6 +53,8 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
     - `create_sg` set as `true`
     - At least a single entry in `additional_sg` list
 
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
 | <a name="vpc_id"></a> [vpc_id](#input\_vpc\_id) | The ID of VPC that is used to create Security Group.  Required only when `create_sg` is set `true` | `string` | `null` | no |  |
 | <a name="subnets"></a> [subnets](#input\_subnets) | A list of subnets in at least two different Availability Zones that host the client applications. | `list(string)` |  | yes |  |
 | <a name="create_sg"></a> [create_sg](#input\_create\_sg) | Flag to decide to create Security Group for MSK. | `bool` | `false` | no |  |
