@@ -3,68 +3,75 @@ variable "cluster_name" {
     type = string
     
 }
-
-variable "vpc_id" {
+## Ensure that the Virtual Private Clouds (VPCs) that you select have 
+## DNS hostnames and DNS resolution enabled.
+variable "vpc_configs" {
     description = <<EOF
-(Optional) The ID of VPC that is used to create Security Group. 
-Required only where `create_sg` is set `true`
+VPC Configuration List where each entry should have the following property defined:
+
+vpc_id      : (Optional) The ID of VPC that is used to create Security Group. Required only when `create_sg` is set `true`
+              Type    : string
+              Default : null
+
+subnets     : (Required) A list of subnets in at least two different Availability Zones that host the client applications.
+              Type    : list(string)
+              
+create_sg   : (Optional) Flag to decide to create Security Group in the VPC for MSK.
+              Type    : bool
+              Default : false
+
+sg_name     : (Optional) The name of the Security group.
+              Type    : string
+              Default : null
+
+sg_rules    : (Optional) Configuration Map for Security Group Rules of Security Group
+              Type    : Refer - https://github.com/arjstack/terraform-aws-security-groups/blob/main/README.md#security-group-rule--ingress--egress-
+              Default : {}
+
+sg_tags     : (Optional) A map of tags to assign to SG. 
+              Type    : map(string)
+              Default : {}
+
+additional_sg: (Optional) List of Existing Security Group IDs associated with MSK.
+              Type    : list(string)
+              Default : []
+
 EOF
-    type = string
-    default = null
+    type = any
+
+    validation {
+        condition = (try(length(var.vpc_configs), 0) > 0)
+        error_message = "At least 1 VPC configuration is required for the serverless cluster."
+    }
+
+    validation {
+        condition = (try(length(var.vpc_configs), 0) <= 5)
+        error_message = "You can not add more than 5 VPC configurations for the serverless cluster."
+    }
 }
 
-variable "subnets" {
-    description = "A list of subnets in at least two different Availability Zones that host the client applications."
-    type = list(string)
-}
-
-variable "create_sg" {
-    description = "Flag to decide to create Security Group for MSK"
+variable "configure_iam_policy" {
+    description = "Flag to decide if IAM Policy should also be configured."
     type        = bool
-    default     = false
+    default     = true
 }
 
-variable "sg_name" {
-    description = "The name of the Security group"
+variable "account_id" {
+    description = "Account ID where MSK cluster is provisioned."
     type        = string
     default     = null
 }
 
-variable "sg_rules" {
-    description = <<EOF
-
-(Optional) Configuration Map for Security Group Rules of Security Group:
-It is a map of Rule Pairs where,
-Key of the map is Rule Type and Value of the map would be an array of Security Rules Map 
-There could be 2 Rule Types [Keys] : 'ingress', 'egress'
-
-(Optional) Configuration List of Map for Security Group Rules where each entry will have following properties:
-
-rule_name: (Required) The name of the Rule (Used for terraform perspective to maintain unicity)
-description: (Optional) Description of the rule.
-from_port: (Required) Start port (or ICMP type number if protocol is "icmp" or "icmpv6").
-to_port: (Required) End port (or ICMP code if protocol is "icmp").
-protocol: (Required) Protocol. If not icmp, icmpv6, tcp, udp, or all use the protocol number
-
-self: (Optional) Whether the security group itself will be added as a source to this ingress rule. 
-cidr_blocks: (Optional) List of IPv4 CIDR blocks
-ipv6_cidr_blocks: (Optional) List of IPv6 CIDR blocks.
-source_security_group_id: (Optional) Security group id to allow access to/from
- 
-Note: 
-1. `cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-2. `ipv6_cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-3. `source_security_group_id` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `self`.
-4. `self` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `source_security_group_id`.
-
-EOF
-    default = {}
+variable "region" {
+    description = "Region Name where MSK cluster is provisioned."
+    type        = string
+    default     = null
 }
 
-variable "additional_sg" {
-    description = "(Optional) List of Existing Security Group IDs associated with MSK."
-    type        = list(string)
-    default     = []
+variable "policy_name" {
+    description = "IAM Policy Name created for the cluster."
+    type        = string
+    default     = null
 }
 
 variable "tags" {
