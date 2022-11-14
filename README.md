@@ -65,9 +65,13 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 ### Nested Configuration Maps:
 
-#### sg_rules [ Ingress / Egress ]
+#### sg_rules
+[ Ingress / Egress ]
 
-Refer [SG Rules Structure](https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-)
+- Map of Security Group Rules with 2 Keys `ingress` and `egress`.
+- The value for each key will be a list of Security group rules where each entry of the list will again be a map of SG Rule Configuration
+
+Refer [SG Rules Configuration](https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-) for the structure
 
 
 ### Outputs

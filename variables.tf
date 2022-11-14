@@ -24,8 +24,10 @@ sg_name     : (Optional) The name of the Security group.
               Type    : string
               Default : null
 
-sg_rules    : (Optional) Configuration Map for Security Group Rules of Security Group
-              Type    : Refer - https://github.com/arjstack/terraform-aws-security-groups/blob/main/README.md#security-group-rule--ingress--egress-
+sg_rules    : (Optional) Map of Security Group Rules with 2 Keys ingress and egress.
+              The value for each key will be a list of Security group rules where 
+              each entry of the list will again be a map of SG Rule Configuration	
+              SG Rules Configuration: Refer (https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-)
               Default : {}
 
 sg_tags     : (Optional) A map of tags to assign to SG. 
