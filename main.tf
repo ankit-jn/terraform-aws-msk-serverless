@@ -36,6 +36,8 @@ module "msk_security_group" {
 
     ingress_rules = flatten([ for rule_key, rule in lookup(each.value, "sg_rules", {}) : rule if rule_key == "ingress" ])
     egress_rules  = flatten([ for rule_key, rule in lookup(each.value, "sg_rules", {}) : rule if rule_key == "egress" ])
+
+    tags = merge(try(each.value.sg_tags, {}), {"MSK" = var.cluster_name}, var.tags)
 }
 
 resource aws_iam_policy "this" {
@@ -44,6 +46,9 @@ resource aws_iam_policy "this" {
     name = coalesce(var.policy_name, format("%s-policy", var.cluster_name))
 
     policy = data.aws_iam_policy_document.this[0].json
+
+    tags = merge({"Name" = coalesce(var.policy_name, format("%s-policy", var.cluster_name))}, 
+                    {"MSK" = var.cluster_name}, var.tags)
 }
 
 ## Kafka IAM Policy documents
