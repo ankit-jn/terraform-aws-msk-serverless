@@ -29,7 +29,7 @@ resource aws_msk_serverless_cluster "this" {
 
 ## Security Group for MSK
 module "msk_security_group" {
-    source = "git::https://github.com/arjstack/terraform-aws-security-groups.git?ref=v1.0.0"
+    source = "git::https://github.com/ankit-jn/terraform-aws-security-groups.git"
 
     for_each = local.security_groups
 
